@@ -1,0 +1,19 @@
+<div class="menuContainer">
+  <div class="menuWrapper">
+    <nav class="siteNav">
+      <div class="logo">Generico<span>Logo</span></div>
+      <div class="navMenu" [class.show]="isOpen">
+        <ul class="navList">
+          <li class="navItem"><a href=""><i></i>Home</a></li>
+          <li class="navItem"><a href=""><i></i>About</a></li>
+          <li class="navItem"><a href=""><i></i>Blog</a></li>
+          <li class="navItem"><a href=""><i></i>Pricing</a></li>
+          <li class="navItem"><a href=""><i></i>Contact</a></li>
+        </ul>
+      </div>
+      <div class="navToggle" id="navToggle" (click)="toggleMenu()">
+        <i class='bx  bx-menu'></i>
+      </div>
+    </nav>
+  </div>
+</div>
