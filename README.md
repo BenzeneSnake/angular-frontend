@@ -30,3 +30,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ## Icons
 
 Icons by Boxicons (https://boxicons.com) – Licensed under CC BY 4.0
+
+## entry page
+
+Original CodePen by [Olivia Ng]: [[URL](https://codepen.io/oliviale/pen/BaoXOOP)]
