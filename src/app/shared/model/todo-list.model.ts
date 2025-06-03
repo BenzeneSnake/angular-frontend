@@ -1,9 +1,8 @@
 export interface TodoItem {
-  Status: boolean;
+  Completed: boolean;
   Thing: string;
   Editing: boolean;
 }
-
 
 // class TodoItemClass {
 //   Status: boolean;
@@ -15,9 +14,8 @@ export interface TodoItem {
 //   }
 // }
 
-
 export enum TodoStatusType {
-  All,
-  Active,
-  Completed
+  ALL,
+  ACTIVE,
+  COMPELETED
 }

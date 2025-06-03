@@ -1,0 +1,89 @@
+<div class="container">
+  <form [formGroup]="todoForm" (submit)="onSubmit($event)">
+    <section class="todoapp">
+      <header class="header">
+        <h1>{{ title }}</h1>
+        <input
+          class="new-todo"
+          #newTodoInput
+          (keyup.enter)="addNewItem()"
+          placeholder="What needs to be done?"
+          formControlName="newTodo"
+          autofocus
+        />
+      </header>
+      <section class="main">
+        <input
+          id="toggle-all"
+          class="toggle-all"
+          type="checkbox"
+          [checked]="toggleAllBtn"
+          (click)="toggleAll()"
+        />
+        <label for="toggle-all">Mark all as complete</label>
+        <ul class="todo-list" formArrayName="todos">
+          <ng-container *ngFor="let item of todos.controls; let i = index">
+            <li
+              *ngIf="getTodoItemDisplay(i)"
+              [ngClass]="{
+                completed: item.value.Completed,
+                smallText: item.value.Completed,
+                editing: item.value.Editing
+              }"
+              [formGroupName]="i"
+            >
+              <div class="view">
+                <input
+                  class="toggle"
+                  type="checkbox"
+                  [checked]="item.value.Completed"
+                  formControlName="Completed"
+                  (click)="clickCheck(i)"
+                />
+                <label>{{ item.value.Thing }}</label>
+                <!-- 待更改上面-->
+                <button class="destroy" (click)="clickDelete(i)"></button>
+              </div>
+              <!-- 待增加Edit input-->
+            </li>
+          </ng-container>
+        </ul>
+      </section>
+      <!-- This footer should be hidden by default and shown when there are todos -->
+      <footer class="footer">
+        <!-- This should be `0 items left` by default -->
+        <span class="todo-count"
+          ><strong>{{ uncompletedCount }}</strong> item left</span
+        >
+        <!-- Remove this if you don't implement routing -->
+        <ul class="filters">
+          <li>
+            <a
+              [class.selected]="nowTodoStatusType === TodoStatusType.ALL"
+              (click)="setTodoStatusType(TodoStatusType.ALL)"
+              >All</a
+            >
+          </li>
+          <li>
+            <a
+              [class.selected]="nowTodoStatusType === TodoStatusType.ACTIVE"
+              (click)="setTodoStatusType(TodoStatusType.ACTIVE)"
+              >Active</a
+            >
+          </li>
+          <li>
+            <a
+              [class.selected]="nowTodoStatusType === TodoStatusType.COMPELETED"
+              (click)="setTodoStatusType(TodoStatusType.COMPELETED)"
+              >Completed</a
+            >
+          </li>
+        </ul>
+        <!-- Hidden if no completed items are left ↓ -->
+        <button class="clear-completed" (click)="cleanCompletedItem()" *ngIf="todos.length > 0">
+          Clear completed
+        </button>
+      </footer>
+    </section>
+  </form>
+</div>
