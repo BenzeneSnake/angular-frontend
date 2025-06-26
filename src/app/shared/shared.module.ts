@@ -1,5 +1,5 @@
-import { NgModule } from "@angular/core";
-import { MenuHeaderComponent } from "./component/menu-header/menu-header/menu-header.component";
+import { NgModule } from '@angular/core';
+import { MenuHeaderComponent } from './component/menu-header/menu-header/menu-header.component';
 
 const components = [MenuHeaderComponent];
 
@@ -8,4 +8,4 @@ const components = [MenuHeaderComponent];
   imports: [],
   exports: [...components],
 })
-export class SharedModule { }
+export class SharedModule {}

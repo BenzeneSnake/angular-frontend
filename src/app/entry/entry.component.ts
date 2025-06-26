@@ -1,28 +1,21 @@
-import { AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
-import { BasePageComponent } from '../shared/base/base-page';
-import * as THREE from 'three';
+import { AfterViewInit, Component } from '@angular/core';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { BasePageComponent } from '../shared/base/base-page';
 
 gsap.registerPlugin(ScrollTrigger);
 
 @Component({
-  selector: 'app-entry',
+  selector: 'lib-app-entry',
   templateUrl: './entry.component.html',
-  styleUrls: ['./entry.component.css']
+  styleUrls: ['./entry.component.css'],
 })
 export class EntryComponent extends BasePageComponent implements AfterViewInit {
   constructor() {
     super();
   }
 
-  ngAfterViewInit() {
-  }
+  ngAfterViewInit(): void {}
 
-  async onInit(): Promise<void> {
-
-  }
-
-
-
+  async onInit(): Promise<void> {}
 }

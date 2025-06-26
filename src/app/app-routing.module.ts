@@ -4,10 +4,10 @@ import { EntryComponent } from './entry/entry.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'entry', pathMatch: 'full' },
-  { path: 'entry', component: EntryComponent }
+  { path: 'entry', component: EntryComponent },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
