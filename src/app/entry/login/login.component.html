@@ -117,98 +117,93 @@
   <!--section2-->
   <div class="blog-header blog-is-sticky">
     <div class="blog-article header-article">
-      <div class="blog-big__title">Self</div>
-      <div class="blog-menu rounded small-title">Pinned Issue</div>
+      <div class="blog-big__title">Welcome back</div>
+      <div class="blog-menu rounded small-title">Login to continue</div>
     </div>
     <!--註冊-->
-   <!-- JQUERY AND NORMALIZED CSS INSTALLED
-View settings for more info. -->
+    <div class="formContainer">
+      <div class="formRight">
+        <!-- Forgot password form -->
+        <div id="forgot" class="form otherForm" [ngClass]="{ 'toggle': currentForm === 'forgot' }">
+          <header>
+            <h1>Forgot Password</h1>
+            <p>Seems like your password is missing</p>
+          </header>
+          <section>
+            <label>
+              <p>Email</p>
+              <input type="email" placeholder=" ">
+              <div class="border"></div>
+            </label>
+            <button type="submit">Send email</button>
+          </section>
+          <footer>
+            <button type="button" class="forgotBtn" (click)="showLogin()">Back</button>
+          </footer>
+        </div>
 
+        <!-- Login form -->
+        <div id="login" class="form" [ngClass]="{ 'toggle': currentForm === 'login' }">
+          <header>
+            <h1>Login</h1>
+            <!-- <p>Login to continue</p> -->
+          </header>
+          <section>
+            <label>
+              <p>Username</p>
+              <input type="text" placeholder=" ">
+              <div class="border"></div>
+            </label>
+            <label>
+              <p>Password</p>
+              <input type="password" placeholder=" ">
+              <div class="border"></div>
+            </label>
+            <button type="submit">Login</button>
+          </section>
+          <footer>
+            <button type="button" class="forgotBtn" (click)="showForget()">Forgot password?</button>
+            <button type="button" class="registerBtn" (click)="showRegister()">Need an account?</button>
+          </footer>
+        </div>
 
-<div id="formContainer" [ngClass]="{ 'toggle': isRegisterToggled }">
-	<div class="formRight">
-		<!-- Forgot password form -->
-		<form id="forgot" class="otherForm">
-			<header>
-				<h1>Forgot Password</h1>
-				<p>Seems like your password is missing</p>
-			</header>
-			<section>
-				<label>
-					<p>Email</p>
-					<input type="email" placeholder=" ">
-					<div class="border"></div>
-				</label>
-				<button type="submit">Send email</button>
-			</section>
-			<footer>
-				<button type="button" class="forgotBtn" (click)="toggleRegister()">Back</button>
-			</footer>
-		</form>
+        <!-- Register form -->
+        <div id="register" class="form otherForm" [ngClass]="{ 'toggle': currentForm === 'register' }">
+          <header>
+            <h1>Register</h1>
+            <!-- <h1>Become a Member</h1> -->
+            <p>Register to gain full access</p>
+          </header>
+          <section>
+            <label>
+              <p>Username</p>
+              <input type="text" placeholder=" ">
+              <div class="border"></div>
+            </label>
+            <label>
+              <p>Email</p>
+              <input type="email" placeholder=" ">
+              <div class="border"></div>
+            </label>
+            <label>
+              <p>Password</p>
+              <input type="password" placeholder=" ">
+              <div class="border"></div>
+            </label>
+            <label>
+              <p>Repeat Password</p>
+              <input type="password" placeholder=" ">
+              <div class="border"></div>
+            </label>
+            <button type="submit">Register</button>
+          </section>
+          <footer>
+            <button type="button" class="registerBtn" (click)="showLogin()">Back</button>
+          </footer>
+        </div>
+      </div>
 
-		<!-- Login form -->
-		<form id="login"  [ngClass]="{ 'toggle': !isRegisterToggled }">
-			<header>
-				<h1>Welcome back</h1>
-				<p>Login to continue</p>
-			</header>
-			<section>
-				<label>
-					<p>Username</p>
-					<input type="text" placeholder=" ">
-					<div class="border"></div>
-				</label>
-				<label>
-					<p>Password</p>
-					<input type="password" placeholder=" ">
-					<div class="border"></div>
-				</label>
-				<button type="submit">Login</button>
-			</section>
-			<footer>
-				<button type="button" class="forgotBtn">Forgot password?</button>
-				<button type="button" class="registerBtn" (click)="toggleRegister()">Need an account?</button>
-			</footer>
-		</form>
-
-	<!-- Register form -->
-		<form id="register" class="otherForm" [ngClass]="{ 'toggle': isRegisterToggled }">
-			<header>
-				<h1>Become a Bro</h1>
-				<p>Register to gain full access</p>
-			</header>
-			<section>
-				<label>
-					<p>Username</p>
-					<input type="text" placeholder=" ">
-					<div class="border"></div>
-				</label>
-				<label>
-					<p>Email</p>
-					<input type="email" placeholder=" ">
-					<div class="border"></div>
-				</label>
-				<label>
-					<p>Password</p>
-					<input type="password" placeholder=" ">
-					<div class="border"></div>
-				</label>
-				<label>
-					<p>Repeat Password</p>
-					<input type="password" placeholder=" ">
-					<div class="border"></div>
-				</label>
-				<button type="submit">Register</button>
-			</section>
-			<footer>
-				<button type="button" class="registerBtn" (click)="toggleRegister()">Back</button>
-			</footer>
-		</form>
-	</div>
-
-</div>
-<!--註冊-->
-    <div class="blog-article page-number">NO. 01</div>
+    </div>
   </div>
 
   <!--section3-->

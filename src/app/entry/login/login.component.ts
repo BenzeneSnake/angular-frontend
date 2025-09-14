@@ -10,7 +10,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   loading = false;
   errorMsg = '';
-  isRegisterToggled = false;
+  currentForm: 'login' | 'register' | 'forgot' = 'login';
   constructor(
     private fb: FormBuilder
     // private authService: AuthService
@@ -23,8 +23,16 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  toggleRegister() {
-    this.isRegisterToggled = !this.isRegisterToggled;
+  showForget() {
+    this.currentForm = 'forgot';
+  }
+
+  showLogin() {
+    this.currentForm = 'login';
+  }
+
+  showRegister() {
+    this.currentForm = 'register';
   }
 
   onLoginSubmit() {
