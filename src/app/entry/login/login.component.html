@@ -1,7 +1,7 @@
 <div class="blog">
   <div class="blog-header blog-is-sticky">
     <div class="blog-article header-article">
-      <div class="blog-big_title">Login</div>
+      <!-- <div class="blog-big_title">Login</div> -->
       <div class="small-title">Welcome back</div>
     </div>
     <!--註冊-->
@@ -9,18 +9,20 @@
       <div class="mainContainer">
         <!-- Forgot password form -->
         <div id="forgot" class="form otherForm" [ngClass]="{ toggle: currentForm === 'forgot' }">
-          <header>
-            <h1>Forgot Password</h1>
-            <p>Seems like your password is missing</p>
-          </header>
-          <section>
-            <label>
-              <p>Email</p>
-              <input type="email" placeholder=" " />
-              <div class="border"></div>
-            </label>
-            <button type="submit">Send email</button>
-          </section>
+          <div class="headerDiv">
+            <header>
+              <h1>Forgot Password</h1>
+              <!-- <p>Seems like your password is missing</p> -->
+            </header>
+          </div>
+          <label>
+            <p>Email</p>
+            <input type="email" placeholder=" " />
+            <div class="border"></div>
+          </label>
+          <div class="btnDiv">
+            <button class="loginBtn" type="submit">Send email</button>
+          </div>
           <footer>
             <button type="button" class="forgotBtn" (click)="showLogin()">Back</button>
           </footer>
@@ -28,19 +30,25 @@
 
         <!-- Login form -->
         <div id="login" class="form" [ngClass]="{ toggle: currentForm === 'login' }">
-          <section>
-            <label>
-              <p>Username</p>
-              <input type="text" placeholder=" " />
-              <div class="border"></div>
-            </label>
-            <label>
-              <p>Password</p>
-              <input type="password" placeholder=" " />
-              <div class="border"></div>
-            </label>
-            <button type="submit">Login</button>
-          </section>
+          <div class="headerDiv">
+            <header>
+              <h1>Login</h1>
+            </header>
+          </div>
+
+          <label>
+            <p>Username</p>
+            <input type="text" placeholder=" " />
+            <div class="border"></div>
+          </label>
+          <label>
+            <p>Password</p>
+            <input type="password" placeholder=" " />
+            <div class="border"></div>
+          </label>
+          <div class="btnDiv">
+            <button class="loginBtn" type="submit">Login</button>
+          </div>
           <footer>
             <button type="button" class="forgotBtn" (click)="showForget()">Forgot password?</button>
             <button type="button" class="registerBtn" (click)="showRegister()">
@@ -55,11 +63,14 @@
           class="form otherForm"
           [ngClass]="{ toggle: currentForm === 'register' }"
         >
-          <header>
-            <h1>Register</h1>
-            <!-- <h1>Become a Member</h1> -->
-            <p>Register to gain full access</p>
-          </header>
+          <div class="headerDiv">
+            <header>
+              <h1>Register</h1>
+              <!-- <h1>Become a Member</h1> -->
+              <!-- <p>Register to gain full access</p> -->
+            </header>
+          </div>
+
           <section>
             <label>
               <p>Username</p>
@@ -81,7 +92,9 @@
               <input type="password" placeholder=" " />
               <div class="border"></div>
             </label>
-            <button type="submit">Register</button>
+            <div class="btnDiv">
+              <button type="submit" class="loginBtn">Register</button>
+            </div>
           </section>
           <footer>
             <button type="button" class="registerBtn" (click)="showLogin()">Back</button>
