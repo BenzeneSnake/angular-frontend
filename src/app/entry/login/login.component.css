@@ -8,9 +8,10 @@
 .blog {
   background-color: #e9e6e4;
   display: grid;
-  width: 100vh;
-  height: 100vh;
-  overflow: hidden;
+  width: 100%;
+  min-height: 100dvh; /* 動態高度，避免鍵盤遮擋 */
+  overflow: auto; /* 若內容超出就會出現瀏覽器卷軸 */
+  /* overflow: hidden; */
   grid-template-columns: 100%;
   grid-template-rows: 100%;
   width: 100%;
@@ -299,7 +300,9 @@
   display: flex;
   transition: 0.2s ease;
   width: 100%;
-  height: 80%;
+  /* height: 80%; */
+  min-height: 800px; /* 隨著螢幕高度自動調整 */
+  /* overflow-y: auto; */
   transition-delay: 0.3s;
   justify-content: center;
   align-items: center;
@@ -329,8 +332,8 @@
     box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.5);
     filter: blur(5px);
   }
-
-  .form {
+}
+/* .form {
     position: relative;
     padding: 25px;
     box-sizing: border-box;
@@ -424,65 +427,203 @@
         }
       }
     }
-  }
+   */
 
-  .form .headerDiv {
-    margin-bottom: 8vh;
-  }
+.form {
+  position: relative;
+  padding: 25px;
+  box-sizing: border-box;
+  white-space: nowrap;
+  overflow: hidden;
+}
 
-  .form .headerDiv h1 {
-    font-size: 4vh;
-  }
+.form header {
+  color: #e9e6e4;
+  text-align: center;
+}
 
-  .form .btnDiv {
-    display: flex;
-    justify-content: center; /* 水平置中 */
-  }
+.form header h1 {
+  margin: 0;
+  font-weight: 400;
+  user-select: none;
+}
 
-  .form .btnDiv .loginBtn {
-    /* background: ; */
-    /* /* border: none; */
-    width: 80%;
-    padding: 10px 0;
-    font-weight: 600;
-    font-size: 2vh;
-    /* color: #fff; */
-    margin-top: 4vh;
+.form header p {
+  margin: 5px 0 0;
+  opacity: 0.5;
+  font-size: 4vh;
+  user-select: none;
+}
+
+.form footer {
+  margin-top: 15px;
+  display: flex;
+}
+
+.form footer button {
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 24px;
+  font-weight: bold;
+  flex: 1;
+  opacity: 0.5;
+}
+
+.form footer button:hover {
+  opacity: 1;
+}
+
+/* otherForm */
+.form.otherForm {
+  top: 0;
+  left: 0;
+  position: absolute;
+  background: #fff;
+  height: 100%;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 0;
+  padding: 25px 0;
+  transition: 0.2s ease;
+  transition-delay: 0.2s;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.form.otherForm .headerDiv header {
+  color: #000;
+  transition: 0.2s ease;
+  transition-delay: 0s;
+}
+
+.form.otherForm label p {
+  color: #000;
+}
+
+.form.otherForm section {
+  opacity: 0;
+  transition: 0.2s ease;
+  transition-delay: 0s;
+}
+
+.form.otherForm footer {
+  border-top-color: rgba(0, 0, 0, 0.1);
+  opacity: 0;
+}
+
+.form.otherForm footer button {
+  color: #000;
+}
+
+.form.otherForm label input {
+  border-color: rgba(0, 0, 0, 0.1);
+  color: #000;
+}
+
+.form.otherForm .border {
+  background: #000;
+}
+
+.form.otherForm.toggle {
+  width: 100%;
+  padding: 25px;
+  transition-delay: 0s;
+}
+
+.form.otherForm.toggle header,
+.form.otherForm.toggle section,
+.form.otherForm.toggle footer {
+  opacity: 1;
+  transition-delay: 0.3s;
+}
+
+.form .headerDiv {
+  margin-bottom: 8vh;
+}
+
+.form .headerDiv h1 {
+  font-size: 4vh;
+}
+
+.form .btnDiv {
+  display: flex;
+  justify-content: center; /* 水平置中 */
+}
+
+.form .btnDiv .loginBtn {
+  /* background: ; */
+  /* /* border: none; */
+  width: 80%;
+  padding: 10px 0;
+  font-weight: 600;
+  font-size: 2vh;
+  /* color: #fff; */
+  margin-top: 4vh;
+  margin-bottom: 2vh;
+  cursor: pointer;
+}
+
+.form label {
+  display: block;
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.form label p {
+  color: #fff;
+  margin: 0 0 10px 0;
+  font-weight: 600;
+  font-size: 3vh;
+  opacity: 0.5;
+  user-select: none;
+}
+
+.form label input {
+  width: 100%;
+  display: block;
+  border: none;
+  background: transparent;
+  color: #fff;
+  border-bottom: 4px solid rgba(255, 255, 255, 0.1);
+  /* padding: 0 0 10px; */
+  box-sizing: border-box;
+  font-size: 3vh;
+  font-weight: 600;
+  &:focus ~ .border {
+    transform: scale(1, 1);
+  }
+  &:not(:placeholder-shown) ~ .border {
+    transform: scale(1, 1);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .mainContainer {
+    width: 90%;
+  }
+  .form .headerDiv.registerHeader {
     margin-bottom: 2vh;
-    cursor: pointer;
   }
-
-  .form label {
-    display: block;
-    margin-bottom: 15px;
-    position: relative;
+  .formContainer {
+    min-height: 500px; /* 隨著螢幕高度自動調整 */
   }
-
+  /* .form .btnDiv { */
+  /* display: flex; */
+  /* justify-content: center; */
+  /* margin-bottom: 12vh; */
+  /* 保留鍵盤空間 */
+  /* } */
+  .form .btnDiv .loginBtn {
+    margin-top: 2vh;
+  }
   .form label p {
-    color: #fff;
-    margin: 0 0 10px 0;
-    font-weight: 600;
-    font-size: 3vh;
-    opacity: 0.5;
-    user-select: none;
+    font-size: 24px;
   }
-
-  .form label input {
-    width: 100%;
-    display: block;
-    border: none;
-    background: transparent;
-    color: #fff;
-    border-bottom: 4px solid rgba(255, 255, 255, 0.1);
-    padding: 0 0 10px;
-    box-sizing: border-box;
-    font-size: 3vh;
-    font-weight: 600;
-    &:focus ~ .border {
-      transform: scale(1, 1);
-    }
-    &:not(:placeholder-shown) ~ .border {
-      transform: scale(1, 1);
-    }
+  .form footer button {
+    font-size: 24px;
   }
 }
