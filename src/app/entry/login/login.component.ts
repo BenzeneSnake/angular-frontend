@@ -1,41 +1,49 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BasePageComponent } from 'src/app/shared/base/base-page';
+import { FidoService } from '../../services/fido.service';
 
 @Component({
   selector: 'lib-app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent extends BasePageComponent {
   loginForm: FormGroup;
   loading = false;
   errorMsg = '';
   currentForm: 'login' | 'register' | 'forgot' = 'login';
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private fidoSvc: FidoService
     // private authService: AuthService
   ) {
+    super();
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
     });
   }
 
-  ngOnInit(): void {}
+  async onInit(): Promise<void> {}
 
-  showForget() {
+  async goNextStep(): Promise<void> {
+    await this.fidoSvc.getRegister().toPromise();
+  }
+
+  showForget(): void {
     this.currentForm = 'forgot';
   }
 
-  showLogin() {
+  showLogin(): void {
     this.currentForm = 'login';
   }
 
-  showRegister() {
+  showRegister(): void {
     this.currentForm = 'register';
   }
 
-  onLoginSubmit() {
+  onLoginSubmit(): void {
     if (this.loginForm.invalid) return;
 
     this.loading = true;
