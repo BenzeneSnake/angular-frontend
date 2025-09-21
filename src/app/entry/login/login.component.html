@@ -32,11 +32,11 @@
             <input type="text" placeholder=" " />
             <div class="border"></div>
           </label>
-          <label>
+          <!-- <label>
             <p>Password</p>
             <input type="password" placeholder=" " />
             <div class="border"></div>
-          </label>
+          </label> -->
           <div class="btnDiv">
             <button class="loginBtn" type="submit">Login</button>
           </div>
@@ -54,31 +54,39 @@
           class="form otherForm"
           [ngClass]="{ toggle: currentForm === 'register' }"
         >
-          <section>
-            <label>
-              <p>Username</p>
-              <input type="text" placeholder=" " />
-              <div class="border"></div>
-            </label>
-            <label>
-              <p>Email</p>
-              <input type="email" placeholder=" " />
-              <div class="border"></div>
-            </label>
-            <label>
-              <p>Password</p>
-              <input type="password" placeholder=" " />
-              <div class="border"></div>
-            </label>
-            <label>
-              <p>Repeat Password</p>
-              <input type="password" placeholder=" " />
-              <div class="border"></div>
-            </label>
-            <div class="btnDiv">
-              <button type="submit" class="loginBtn">Register</button>
-            </div>
-          </section>
+          <form [formGroup]="registerForm" (ngSubmit)="onRegisterSubmit()">
+            <section>
+              <label>
+                <p>Username</p>
+                <input type="text" placeholder=" " formControlName="username" />
+                <div class="border"></div>
+              </label>
+              <label>
+                <p>Display Name</p>
+                <input type="text" placeholder=" " formControlName="display" />
+                <div class="border"></div>
+              </label>
+              <!--FIDO註冊，暫時不須密碼-->
+              <!-- <label>
+                <p>Password</p>
+                <input type="password" placeholder=" " formControlName="password" />
+                <div class="border"></div>
+              </label>
+              <label>
+                <p>Repeat Password</p>
+                <input type="password" placeholder=" " formControlName="confirmPassword" />
+                <div class="border"></div>
+              </label> -->
+              <div class="error-message" *ngIf="errorMsg && currentForm === 'register'">
+                {{ errorMsg }}
+              </div>
+              <div class="btnDiv">
+                <button type="submit" class="loginBtn" [disabled]="loading">
+                  {{ loading ? '註冊中...' : 'Register' }}
+                </button>
+              </div>
+            </section>
+          </form>
           <footer>
             <button type="button" class="registerBtn" (click)="showLogin()">Back</button>
           </footer>
