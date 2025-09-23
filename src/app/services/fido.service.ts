@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { applyDataModel } from '../models/apply-data.model';
 import { ApiFidoService } from './api-fido.service';
+import { RegisterReqModel } from './api-models/fido-req-model';
+import { CredentialCreateResponse } from './api-models/fido-res-model';
 
 @Injectable({
   providedIn: 'root',
@@ -15,18 +17,25 @@ export class FidoService {
   constructor(private api: ApiFidoService) {}
 
   /**
-   * @GET 執行register
+   * @POST 執行register
    */
-  getRegister(): Observable<applyDataModel> {
-    if (this.cache.travelApplyData) {
-      return of(this.cache.travelApplyData);
-    }
-    return this.api.getRegister().pipe(
-      this.not200ThrowError(),
-      map((res) => res.data),
-      tap((data) => (this.cache.travelApplyData = data))
-    );
+  registerUser(param: RegisterReqModel): Observable<CredentialCreateResponse> {
+    return this.api.registerUser(param).pipe(map((res) => res.data));
   }
+
+  // /**
+  //  * @GET 執行register
+  //  */
+  // getRegister(): Observable<applyDataModel> {
+  //   if (this.cache.travelApplyData) {
+  //     return of(this.cache.travelApplyData);
+  //   }
+  //   return this.api.getRegister().pipe(
+  //     this.not200ThrowError(),
+  //     map((res) => res.data),
+  //     tap((data) => (this.cache.travelApplyData = data))
+  //   );
+  // }
 
   private not200ThrowError() {
     return (source: Observable<any>) =>
