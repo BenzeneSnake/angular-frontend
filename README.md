@@ -34,3 +34,16 @@ Icons by Boxicons (https://boxicons.com) – Licensed under CC BY 4.0
 ## entry page
 
 Original CodePen by [Olivia Ng]: [[URL](https://codepen.io/oliviale/pen/BaoXOOP)]
+
+---
+
+## Login /Register: 配合後端程式，使用FIDO2 / WebAuthn
+
+### FIDO2 / WebAuthn 說明
+
+詳閱:
+[FIDO2 / WebAuthn 說明](angular-frontend/src/docs/FIDO2.md)
+
+### 後端程式
+
+[webauthn_fido_java_demo](https://github.com/BenzeneSnake/webauthn_fido_java_demo)
