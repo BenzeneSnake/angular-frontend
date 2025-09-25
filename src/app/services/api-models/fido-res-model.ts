@@ -44,7 +44,7 @@ export interface UserIdentity {
 
 export interface RegistrationExtensionInputs {
   /** AppID 排除清單 */
-  appidExclude: AppId;
+  appidExclude: string;
   /** 詢問 Authenticator 是否支援一些 credential 屬性 */
   credProps: boolean;
   // LargeBlob 是內部型別，後端在用，前端不用定義或可留空
@@ -52,6 +52,6 @@ export interface RegistrationExtensionInputs {
   uvm: boolean;
 }
 
-export interface AppId {
-  appid: string;
-}
+// export interface AppId {
+//   appid: string;
+// }

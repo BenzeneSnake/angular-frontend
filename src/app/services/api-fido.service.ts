@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Res } from '../models/apply-data.model';
-import { RegisterReqModel } from './api-models/fido-req-model';
+import { FinishAuthReqModel, RegisterReqModel } from './api-models/fido-req-model';
 import { CredentialCreateResponse } from './api-models/fido-res-model';
 // import {
 //   base64urlToUint8array,
@@ -14,7 +14,7 @@ import { CredentialCreateResponse } from './api-models/fido-res-model';
   providedIn: 'root',
 })
 export class ApiFidoService {
-  // private prefixPath = '/api';
+  private prefixPath = '/api';
   // private channelId = 'default';
 
   constructor(private httpClient: HttpClient) {}
@@ -47,7 +47,14 @@ export class ApiFidoService {
    * @POST fido服務列表 - API1 註冊
    */
   private get REGISTER_USER() {
-    return `/register`;
+    return `${this.prefixPath}/register`;
+  }
+
+  /**
+   * @POST fido服務列表 - API1 註冊
+   */
+  private get FINISH_AUTH() {
+    return `${this.prefixPath}/finishauth`;
   }
 
   /**
@@ -60,102 +67,10 @@ export class ApiFidoService {
   }
 
   /**
-   * Complete FIDO registration flow
+   * @POST - fido服務列表 - API2 結束Auth
+   *
    */
-  // async completeFidoRegistration(param: RegisterReqModel): Promise<any> {
-  //   try {
-  //     // Step 1: Start registration
-  //     // const formData = new FormData();
-  //     // formData.append('username', username);
-  //     // formData.append('display', display);
-
-  //     // const response = await fetch(this.REGISTER, {
-  //     //   method: 'POST',
-  //     //   body: param,
-  //     // });
-
-  //     const credentialCreateJson = await WebauthnUtils.getInstance().initialCheckStatus(response);
-
-  //     // Step 2: Transform credential creation options
-  //     const credentialCreateOptions = {
-  //       publicKey: {
-  //         ...credentialCreateJson.publicKey,
-  //         challenge: WebauthnUtils.getInstance().base64urlToUint8array(
-  //           credentialCreateJson.publicKey.challenge
-  //         ),
-  //         user: {
-  //           ...credentialCreateJson.publicKey.user,
-  //           id: WebauthnUtils.getInstance().base64urlToUint8array(
-  //             credentialCreateJson.publicKey.user.id
-  //           ),
-  //         },
-  //         excludeCredentials:
-  //           credentialCreateJson.publicKey.excludeCredentials?.map((credential: any) => ({
-  //             ...credential,
-  //             id: WebauthnUtils.getInstance().base64urlToUint8array(credential.id),
-  //           })) || [],
-  //         extensions: credentialCreateJson.publicKey.extensions,
-  //       },
-  //     };
-
-  //     // Step 3: Create credential using WebAuthn API
-  //     const publicKeyCredential = (await navigator.credentials.create(
-  //       credentialCreateOptions
-  //     )) as PublicKeyCredential;
-
-  //     if (!publicKeyCredential) {
-  //       throw new Error('Failed to create credential');
-  //     }
-
-  //     // Step 4: Encode credential response
-  //     const publicKeyCredentialResponse =
-  //       publicKeyCredential.response as AuthenticatorAttestationResponse & {
-  //         getTransports?: () => string[];
-  //       };
-
-  //     const encodedResult = {
-  //       type: publicKeyCredential.type,
-  //       id: publicKeyCredential.id,
-  //       response: {
-  //         attestationObject: WebauthnUtils.getInstance().uint8arrayToBase64url(
-  //           new Uint8Array(publicKeyCredentialResponse.attestationObject)
-  //         ),
-  //         clientDataJSON: WebauthnUtils.getInstance().uint8arrayToBase64url(
-  //           new Uint8Array(publicKeyCredentialResponse.clientDataJSON)
-  //         ),
-  //         transports: publicKeyCredentialResponse.getTransports
-  //           ? publicKeyCredentialResponse.getTransports()
-  //           : [],
-  //       },
-  //       clientExtensionResults: publicKeyCredential.getClientExtensionResults(),
-  //     };
-  //     // Step 5: Complete registration
-  //     const finalFormData = new FormData();
-  //     finalFormData.append('username', username);
-  //     finalFormData.append('display', display);
-  //     finalFormData.append('credential', JSON.stringify(encodedResult));
-
-  //     const finalResponse = await fetch(this.FINISH_AUTH, {
-  //       method: 'POST',
-  //       body: finalFormData,
-  //     });
-
-  //     if (!finalResponse.ok) {
-  //       throw new Error(`Registration failed: ${finalResponse.statusText}`);
-  //     }
-
-  //     return await finalResponse.json();
-  //   } catch (error) {
-  //     console.error('FIDO registration error:', error);
-  //     throw error;
-  //   }
-  // }
-
-  // private get REGISTER() {
-  //   return `${this.prefixPath}/register`;
-  // }
-
-  // private get FINISH_AUTH() {
-  //   return `${this.prefixPath}/finishauth`;
-  // }
+  finishAuth(param: FinishAuthReqModel): Observable<Res<string>> {
+    return this.httpClient.post<Res<string>>(this.FINISH_AUTH, param);
+  }
 }

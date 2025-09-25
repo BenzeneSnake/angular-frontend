@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { applyDataModel } from '../models/apply-data.model';
 import { ApiFidoService } from './api-fido.service';
-import { RegisterReqModel } from './api-models/fido-req-model';
+import { FinishAuthReqModel, RegisterReqModel } from './api-models/fido-req-model';
 import { CredentialCreateResponse } from './api-models/fido-res-model';
 
 @Injectable({
@@ -21,6 +21,13 @@ export class FidoService {
    */
   registerUser(param: RegisterReqModel): Observable<CredentialCreateResponse> {
     return this.api.registerUser(param).pipe(map((res) => res.data));
+  }
+
+  /**
+   * @POST 執行register
+   */
+  finishAuth(param: FinishAuthReqModel): Observable<string> {
+    return this.api.finishAuth(param).pipe(map((res) => res.data));
   }
 
   // /**
