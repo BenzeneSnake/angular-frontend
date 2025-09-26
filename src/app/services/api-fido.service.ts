@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Res } from '../models/apply-data.model';
-import { FinishAuthReqModel, RegisterReqModel } from './api-models/fido-req-model';
-import { CredentialCreateResponse } from './api-models/fido-res-model';
+import { FinishAuthReqModel, RegisterReqModel } from '../models/api-models/fido-req-model';
+import { CredentialCreateResponse } from '../models/api-models/fido-res-model';
+import { Res } from '../models/common-models/res-model';
 // import {
 //   base64urlToUint8array,
 //   initialCheckStatus,

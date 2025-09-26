@@ -1,26 +1,26 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { applyDataModel } from '../models/apply-data.model';
+import { map, tap } from 'rxjs/operators';
+import { FinishAuthReqModel, RegisterReqModel } from '../models/api-models/fido-req-model';
+import { CredentialCreateResponse } from '../models/api-models/fido-res-model';
 import { ApiFidoService } from './api-fido.service';
-import { FinishAuthReqModel, RegisterReqModel } from './api-models/fido-req-model';
-import { CredentialCreateResponse } from './api-models/fido-res-model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FidoService {
-  private cache: {
-    travelApplyData?: applyDataModel;
-  } = {};
-
   constructor(private api: ApiFidoService) {}
 
   /**
    * @POST 執行register
    */
   registerUser(param: RegisterReqModel): Observable<CredentialCreateResponse> {
-    return this.api.registerUser(param).pipe(map((res) => res.data));
+    return this.api.registerUser(param).pipe(
+      tap((res) => {
+        console.log('registerUser response:', res);
+      }),
+      map((res) => res.data)
+    );
   }
 
   /**

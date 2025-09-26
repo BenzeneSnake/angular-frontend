@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FinishAuthReqModel, RegisterReqModel } from 'src/app/services/api-models/fido-req-model';
+import { FinishAuthReqModel, RegisterReqModel } from 'src/app/models/api-models/fido-req-model';
 import { BasePageComponent } from 'src/app/shared/base/base-page';
 import { WebauthnUtils } from 'src/app/shared/utils/webauthn.utils';
 import { ApiFidoService } from '../../services/api-fido.service';
