@@ -2,7 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FinishAuthReqModel, RegisterReqModel } from '../models/api-models/fido-req-model';
-import { CredentialCreateResponse } from '../models/api-models/fido-res-model';
+import {
+  CredentialCreateResponse,
+  FinishRegistrationResponse,
+} from '../models/api-models/fido-res-model';
 import { Res } from '../models/common-models/res-model';
 // import {
 //   base64urlToUint8array,
@@ -70,7 +73,7 @@ export class ApiFidoService {
    * @POST - fido服務列表 - API2 結束Auth
    *
    */
-  finishAuth(param: FinishAuthReqModel): Observable<Res<string>> {
-    return this.httpClient.post<Res<string>>(this.FINISH_AUTH, param);
+  finishAuth(param: FinishAuthReqModel): Observable<Res<FinishRegistrationResponse>> {
+    return this.httpClient.post<Res<FinishRegistrationResponse>>(this.FINISH_AUTH, param);
   }
 }

@@ -11,3 +11,9 @@ export interface Res<T> {
 
   success?: boolean;
 }
+
+export interface ErrorData {
+  registerSuccess: boolean;
+  message: string;
+  username: string | null;
+}
