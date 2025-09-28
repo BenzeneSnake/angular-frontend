@@ -2,7 +2,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { FinishAuthReqModel, RegisterReqModel } from '../models/api-models/fido-req-model';
-import { CredentialCreateResponse } from '../models/api-models/fido-res-model';
+import {
+  CredentialCreateResponse,
+  FinishRegistrationResponse,
+} from '../models/api-models/fido-res-model';
+import { Res } from '../models/common-models/res-model';
 import { ApiFidoService } from './api-fido.service';
 
 @Injectable({
@@ -26,8 +30,8 @@ export class FidoService {
   /**
    * @POST 執行register
    */
-  finishAuth(param: FinishAuthReqModel): Observable<string> {
-    return this.api.finishAuth(param).pipe(map((res) => res.data));
+  finishAuth(param: FinishAuthReqModel): Observable<Res<FinishRegistrationResponse>> {
+    return this.api.finishAuth(param);
   }
 
   // /**

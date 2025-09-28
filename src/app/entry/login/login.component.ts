@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FinishAuthReqModel, RegisterReqModel } from 'src/app/models/api-models/fido-req-model';
+import { RegistrationExtensionInputs } from 'src/app/models/api-models/fido-res-model';
+import { ErrorData } from 'src/app/models/common-models/res-model';
 import { BasePageComponent } from 'src/app/shared/base/base-page';
 import { WebauthnUtils } from 'src/app/shared/utils/webauthn.utils';
 import { ApiFidoService } from '../../services/api-fido.service';
@@ -95,9 +97,6 @@ export class LoginComponent extends BasePageComponent {
 
       console.log('FIDO 註冊成功:', result);
       this.loading = false;
-
-      // 註冊成功後返回登入頁面
-      this.showLogin();
     } catch (error: any) {
       this.loading = false;
       console.error('FIDO 註冊錯誤:', error);
@@ -118,40 +117,33 @@ export class LoginComponent extends BasePageComponent {
   /**
    * Complete FIDO registration flow
    */
-  async completeFidoRegistration(param: RegisterReqModel): Promise<any> {
+  async completeFidoRegistration(param: RegisterReqModel): Promise<void> {
     try {
-      // Step 1: Start registration
-      // const formData = new FormData();
-      // formData.append('username', username);
-      // formData.append('display', display);
-      // const response = await fetch(this.REGISTER, {
-      //   method: 'POST',
-      //   body: param,
-      // });
       const credentialCreateJson = await this.fidoSvc.registerUser(param).toPromise();
+
       // Step 2: Transform credential creation options
       const credentialCreateOptions = {
         publicKey: {
-          ...credentialCreateJson.publicKey,
-          challenge: WebauthnUtils.getInstance().base64urlToUint8array(
-            credentialCreateJson.publicKey.challenge
-          ),
+          rp: credentialCreateJson.publicKey.rp,
           user: {
             ...credentialCreateJson.publicKey.user,
             id: WebauthnUtils.getInstance().base64urlToUint8array(
               credentialCreateJson.publicKey.user.id
             ),
           },
+          challenge: WebauthnUtils.getInstance().base64urlToUint8array(
+            credentialCreateJson.publicKey.challenge
+          ),
+          pubKeyCredParams: credentialCreateJson.publicKey.pubKeyCredParams,
+          timeout: credentialCreateJson.publicKey.timeout,
           excludeCredentials:
             credentialCreateJson.publicKey.excludeCredentials?.map((credential: any) => ({
               ...credential,
               id: WebauthnUtils.getInstance().base64urlToUint8array(credential.id),
             })) || [],
-          extensions: {
-            ...credentialCreateJson.publicKey.extensions,
-            appidExclude: credentialCreateJson.publicKey.extensions?.appidExclude ?? '',
-          },
-          // credentialCreateJson.publicKey.extensions,
+          authenticatorSelection: credentialCreateJson.publicKey.authenticatorSelection,
+          attestation: credentialCreateJson.publicKey.attestation,
+          extensions: this.buildExtensions(credentialCreateJson.publicKey.extensions),
         },
       };
       // Step 3: Create credential using WebAuthn API
@@ -185,19 +177,41 @@ export class LoginComponent extends BasePageComponent {
       // Step 5: Complete registration
       this.finishAuthReq = {
         username: param.username,
-        display: param.display,
-        credential: JSON.stringify(encodedResult),
+        credname: param.display,
+        credential: publicKeyCredential,
       };
-      // const finalFormData = new FormData();
-      // finalFormData.append('username', param.username);
-      // finalFormData.append('display', param.display);
-      // finalFormData.append('credential', JSON.stringify(encodedResult));
-      //TODO:改成另一種寫法
       const finishauth = await this.fidoSvc.finishAuth(this.finishAuthReq).toPromise();
-      return finishauth;
+      switch (finishauth.status) {
+        case '200':
+          this.showLogin();
+          break;
+        default: {
+          const err = finishauth.errorData as ErrorData;
+          this.errorMsg = err.message;
+          break;
+        }
+      }
     } catch (error) {
       console.error('FIDO registration error:', error);
       throw error;
     }
+  }
+  /**
+   * Build WebAuthn extensions object, filtering out null values
+   */
+  private buildExtensions(
+    extensions: RegistrationExtensionInputs
+  ): AuthenticationExtensionsClientInputs {
+    if (!extensions) return {};
+
+    const cleanExtensions: AuthenticationExtensionsClientInputs = {};
+
+    if (extensions.appidExclude !== null && extensions.appidExclude !== undefined) {
+      cleanExtensions.appid = extensions.appidExclude;
+    }
+    if (extensions.credProps !== null && extensions.credProps !== undefined) {
+      cleanExtensions.credProps = extensions.credProps;
+    }
+    return cleanExtensions;
   }
 }

@@ -5,6 +5,6 @@ export interface RegisterReqModel {
 
 export interface FinishAuthReqModel {
   username: string;
-  display: string;
-  credential: string;
+  credname: string;
+  credential: PublicKeyCredential;
 }
