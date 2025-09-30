@@ -74,8 +74,11 @@ export interface AssertionResponse {
 }
 
 /** 登入完成回應 */
-export interface LoginFinishResponse {
-  success: boolean;
-  username?: string;
-  message?: string;
+export interface finishLoginResponse {
+  /** 登入是否成功 */
+  loginSuccess: boolean;
+  /** 響應訊息 */
+  message: number;
+  /** 用戶名 */
+  username: string;
 }
