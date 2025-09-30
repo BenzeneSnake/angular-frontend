@@ -3,8 +3,17 @@ export interface RegisterReqModel {
   display: string;
 }
 
-export interface FinishAuthReqModel {
+export interface FinishRegisterAuthReqModel {
   username: string;
   credname: string;
   credential: PublicKeyCredential;
+}
+
+export interface LoginReqModel {
+  username: string;
+}
+
+export interface FinishLoginAuthReqModel {
+  username: string;
+  credential: string;
 }

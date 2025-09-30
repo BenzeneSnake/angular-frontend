@@ -7,7 +7,6 @@
         <span *ngSwitchCase="'forgot'">Forgot password?</span>
       </div>
     </div>
-    <!--註冊-->
     <div class="formContainer">
       <div class="mainContainer">
         <!-- Forgot password form -->
@@ -27,19 +26,21 @@
 
         <!-- Login form -->
         <div id="login" class="form" [ngClass]="{ toggle: currentForm === 'login' }">
-          <label>
-            <p>Username</p>
-            <input type="text" placeholder=" " />
-            <div class="border"></div>
-          </label>
-          <!-- <label>
+          <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
+            <label>
+              <p>Username</p>
+              <input type="text" placeholder=" " formControlName="username" />
+              <div class="border"></div>
+            </label>
+            <!-- <label>
             <p>Password</p>
             <input type="password" placeholder=" " />
             <div class="border"></div>
           </label> -->
-          <div class="btnDiv">
-            <button class="loginBtn" type="submit">Login</button>
-          </div>
+            <div class="btnDiv">
+              <button type="submit" class="loginBtn">Login</button>
+            </div>
+          </form>
           <footer>
             <button type="button" class="forgotBtn" (click)="showForget()">Forgot password?</button>
             <button type="button" class="registerBtn" (click)="showRegister()">

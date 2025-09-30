@@ -60,3 +60,22 @@ export interface FinishRegistrationResponse {
   /** 用戶名 */
   username: string;
 }
+
+/** 登入開始回應 - Assertion Request */
+export interface AssertionResponse {
+  publicKey: {
+    challenge: string;
+    timeout?: number;
+    rpId?: string;
+    allowCredentials?: PublicKeyCredentialDescriptor[];
+    userVerification?: UserVerificationRequirement;
+    extensions?: AuthenticationExtensionsClientInputs;
+  };
+}
+
+/** 登入完成回應 */
+export interface LoginFinishResponse {
+  success: boolean;
+  username?: string;
+  message?: string;
+}
