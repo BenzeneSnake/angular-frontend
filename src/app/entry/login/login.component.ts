@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import {
   FinishLoginAuthReqModel,
   FinishRegisterAuthReqModel,
@@ -29,7 +30,8 @@ export class LoginComponent extends BasePageComponent {
   constructor(
     private fb: FormBuilder,
     private fidoSvc: FidoService,
-    private apiFidoSvc: ApiFidoService
+    private apiFidoSvc: ApiFidoService,
+    private router: Router
     // private authService: AuthService
   ) {
     super();
@@ -282,14 +284,16 @@ export class LoginComponent extends BasePageComponent {
       };
       //encodedResult物件轉成字串
       const loginResult = await this.fidoSvc.finishLogin(this.finishLoginAuthReq).toPromise();
-
-      // if (loginResult.success) {
-      //   console.log('Login successful:', loginResult);
-      //   // Handle successful login - redirect or update UI
-      //   // You can add navigation logic here
-      // } else {
-      //   this.errorMsg = loginResult.message || 'Login failed';
-      // }
+      switch (loginResult.status) {
+        case '200':
+          this.router.navigate(['/welcome']);
+          break;
+        default: {
+          const err = loginResult.errorData as ErrorData;
+          this.errorMsg = err.message;
+          break;
+        }
+      }
 
       this.loading = false;
     } catch (error: any) {
