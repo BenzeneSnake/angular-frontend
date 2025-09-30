@@ -1,8 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { FinishAuthReqModel, RegisterReqModel } from '../models/api-models/fido-req-model';
 import {
+  FinishLoginAuthReqModel,
+  FinishRegisterAuthReqModel,
+  LoginReqModel,
+  RegisterReqModel,
+} from '../models/api-models/fido-req-model';
+import {
+  AssertionResponse,
   CredentialCreateResponse,
   FinishRegistrationResponse,
 } from '../models/api-models/fido-res-model';
@@ -61,6 +67,20 @@ export class ApiFidoService {
   }
 
   /**
+   * @POST fido服務列表 - Login Start
+   */
+  private get LOGIN_START() {
+    return `${this.prefixPath}/login`;
+  }
+
+  /**
+   * @POST fido服務列表 - Login Finish
+   */
+  private get LOGIN_FINISH() {
+    return `${this.prefixPath}/welcome`;
+  }
+
+  /**
    * @POST - fido服務列表 - API1 註冊
    *
    * 送出 register 請求給後端，並拿回 credential creation options
@@ -73,7 +93,25 @@ export class ApiFidoService {
    * @POST - fido服務列表 - API2 結束Auth
    *
    */
-  finishAuth(param: FinishAuthReqModel): Observable<Res<FinishRegistrationResponse>> {
+  finishAuth(param: FinishRegisterAuthReqModel): Observable<Res<FinishRegistrationResponse>> {
     return this.httpClient.post<Res<FinishRegistrationResponse>>(this.FINISH_AUTH, param);
+  }
+
+  /**
+   * @POST - fido服務列表 - API3 登入開始
+   *
+   * 送出 login 請求給後端，獲取 assertion options
+   */
+  startLogin(param: LoginReqModel): Observable<Res<AssertionResponse>> {
+    return this.httpClient.post<Res<AssertionResponse>>(this.LOGIN_START, param);
+  }
+
+  /**
+   * @POST - fido服務列表 - API4 登入完成
+   *
+   * 完成登入驗證
+   */
+  finishLogin(param: FinishLoginAuthReqModel): Observable<any> {
+    return this.httpClient.post<any>(this.LOGIN_FINISH, param);
   }
 }
