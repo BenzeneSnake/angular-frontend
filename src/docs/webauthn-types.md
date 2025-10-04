@@ -1,5 +1,22 @@
 # FIDO2 / WebAuthn 說明
 
+## WebAuthn API
+
+### 1.navigator.credentials.create()
+
+- 用來註冊（Registration / Attestation）。
+- 前端傳入 PublicKeyCredentialCreationOptions 給瀏覽器，瀏覽器會和 authenticator（例如安全金鑰、指紋、Windows Hello）互動，最後產生一個 PublicKeyCredential。
+
+- 這個 credential 物件包含 attestation object 和 client data JSON，會送回後端驗證並保存。
+
+### 2.navigator.credentials.get()
+
+- 用來驗證（Authentication / Assertion）。
+
+- 前端傳入 PublicKeyCredentialRequestOptions，瀏覽器會叫 authenticator 簽署挑戰（challenge）。
+
+- 回傳的 PublicKeyCredential 物件包含 authenticator data 和 signature，送回後端驗證身分。
+
 ## 角色說明
 
 ### 1️⃣ RP（Relying Party）
