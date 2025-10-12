@@ -54,6 +54,12 @@ export class FidoService {
     return this.api.finishLogin(param);
   }
 
+  /**
+   * @DELETE 刪除用戶
+   */
+  deleteUser(userId: number): Observable<Res<string>> {
+    return this.api.deleteUser(userId);
+  }
   // private not200ThrowError() {
   //   return (source: Observable<any>) =>
   //     source.pipe(

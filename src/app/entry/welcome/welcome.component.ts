@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { BasePageComponent } from 'src/app/shared/base/base-page';
 
 @Component({
@@ -9,7 +10,13 @@ import { BasePageComponent } from 'src/app/shared/base/base-page';
 export class WelcomeComponent extends BasePageComponent {
   username = '';
 
-  async onInit(): Promise<void> {
-    // 可以從路由參數或服務中獲取使用者名稱
+  constructor(private router: Router) {
+    super();
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras.state) {
+      this.username = navigation.extras.state['username'] || '';
+    }
   }
+
+  async onInit(): Promise<void> {}
 }
