@@ -114,4 +114,22 @@ export class ApiFidoService {
   finishLogin(param: FinishLoginAuthReqModel): Observable<any> {
     return this.httpClient.post<any>(this.LOGIN_FINISH, param);
   }
+
+  /**
+   * @DELETE - 取消註冊（刪除用戶）
+   *
+   * 刪除 PENDING 或 COMPLETED 狀態的用戶
+   * - PENDING 用戶：只刪除本地 DB
+   * - COMPLETED 用戶：同時刪除 Keycloak 和本地 DB
+   */
+  deleteUser(userId: number): Observable<Res<string>> {
+    return this.httpClient.delete<Res<string>>(this.DELETE_USER(userId.toString()));
+  }
+
+  /**
+   * @DELETE - 取消註冊（刪除用戶）
+   */
+  private DELETE_USER(userId: string) {
+    return `${this.prefixPath}/user/${userId}`;
+  }
 }

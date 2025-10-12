@@ -13,6 +13,7 @@ import { BasePageComponent } from 'src/app/shared/base/base-page';
 import { WebauthnUtils } from 'src/app/shared/utils/webauthn.utils';
 import { ApiFidoService } from '../../services/api-fido.service';
 import { FidoService } from '../../services/fido.service';
+import { LoginValidator } from './login.validator';
 
 @Component({
   selector: 'lib-app-login',
@@ -27,6 +28,8 @@ export class LoginComponent extends BasePageComponent {
   currentForm: 'login' | 'register' | 'forgot' = 'login';
   finishRegisterAuthReq!: FinishRegisterAuthReqModel;
   finishLoginAuthReq!: FinishLoginAuthReqModel;
+  currentUserId: number | null = null; // 保存當前註冊/登入的用戶 ID
+
   constructor(
     private fb: FormBuilder,
     private fidoSvc: FidoService,
@@ -38,6 +41,7 @@ export class LoginComponent extends BasePageComponent {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
     });
+    this.loginForm.setValidators(LoginValidator.validate);
     this.registerForm = this.fb.group({
       username: ['', Validators.required],
       display: ['', Validators.required],
@@ -66,14 +70,16 @@ export class LoginComponent extends BasePageComponent {
    * @returns
    */
   async onRegisterSubmit(): Promise<void> {
-    if (this.registerForm.invalid) return;
+    if (this.registerForm.invalid) {
+      this.registerForm.markAllAsTouched();
+      return;
+    }
 
     this.loading = true;
     this.errorMsg = '';
+    const registerForm: RegisterReqModel = this.registerForm.getRawValue();
 
     try {
-      const registerForm: RegisterReqModel = this.registerForm.getRawValue();
-
       // 使用完整的 FIDO 註冊流程
       const result = await this.completeFidoRegistration(registerForm);
 
@@ -82,6 +88,22 @@ export class LoginComponent extends BasePageComponent {
     } catch (error: any) {
       this.loading = false;
       console.error('FIDO 註冊錯誤:', error);
+
+      // 註冊失敗時，調用取消註冊 API 清理用戶資料
+      if (this.currentUserId !== null) {
+        try {
+          console.log(
+            'Registration failed, attempting to delete user with userId:',
+            this.currentUserId
+          );
+          await this.fidoSvc.deleteUser(this.currentUserId).toPromise();
+          console.log('User deleted successfully after registration failure');
+        } catch (deleteError) {
+          console.error('Failed to delete user after registration error:', deleteError);
+          this.errorMsg = 'Failed to delete user after registration error: ' + deleteError;
+          return; // 提早返回，不顯示其他錯誤訊息
+        }
+      }
 
       // 根據錯誤類型顯示不同訊息
       if (error.name === 'NotSupportedError') {
@@ -93,6 +115,8 @@ export class LoginComponent extends BasePageComponent {
       } else {
         this.errorMsg = error.message || 'FIDO 註冊失敗，請稍後再試';
       }
+    } finally {
+      this.currentUserId = null; // 清除 userId
     }
   }
 
@@ -102,6 +126,10 @@ export class LoginComponent extends BasePageComponent {
   async completeFidoRegistration(param: RegisterReqModel): Promise<void> {
     try {
       const credentialCreateJson = await this.fidoSvc.registerUser(param).toPromise();
+
+      // 保存 userId，以便錯誤時可以刪除用戶
+      this.currentUserId = credentialCreateJson.userId;
+      console.log('User registered with userId:', this.currentUserId);
 
       // Step 2: Transform credential creation options
       const credentialCreateOptions = {
@@ -185,7 +213,10 @@ export class LoginComponent extends BasePageComponent {
    * @returns
    */
   async onLoginSubmit(): Promise<void> {
-    if (this.registerForm.invalid) return;
+    if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
+      return;
+    }
 
     this.loading = true;
     this.errorMsg = '';
@@ -216,6 +247,7 @@ export class LoginComponent extends BasePageComponent {
   }
 
   async completeFidoLogin(param: LoginReqModel): Promise<void> {
+    const username = param.username;
     if (this.loginForm.invalid) return;
 
     this.loading = true;
@@ -224,6 +256,10 @@ export class LoginComponent extends BasePageComponent {
     try {
       // Step 1: Start login process - get assertion options
       const assertionResponse = await this.fidoSvc.startLogin(param).toPromise();
+
+      // 保存 userId，以便錯誤時可以刪除用戶（如果是 PENDING 狀態）
+      this.currentUserId = assertionResponse.data.userId;
+      console.log('Login started for userId:', this.currentUserId);
 
       // Step 2: Transform assertion options for WebAuthn API
       const credentialGetOptions = {
@@ -279,14 +315,16 @@ export class LoginComponent extends BasePageComponent {
 
       // Step 5: Complete registration
       this.finishLoginAuthReq = {
-        username: param.username,
+        username,
         credential: JSON.stringify(encodedResult),
       };
       //encodedResult物件轉成字串
       const loginResult = await this.fidoSvc.finishLogin(this.finishLoginAuthReq).toPromise();
       switch (loginResult.status) {
         case '200':
-          this.router.navigate(['/welcome']);
+          this.router.navigate(['/welcome'], {
+            state: { username },
+          });
           break;
         default: {
           const err = loginResult.errorData as ErrorData;
@@ -296,9 +334,23 @@ export class LoginComponent extends BasePageComponent {
       }
 
       this.loading = false;
+      this.currentUserId = null; // 清除 userId
     } catch (error: any) {
       this.loading = false;
       console.error('Login error:', error);
+
+      // 登入失敗時，調用取消註冊 API 清理用戶資料（針對 PENDING 用戶）
+      // if (this.currentUserId !== null) {
+      //   try {
+      //     console.log('Login failed, attempting to delete user with userId:', this.currentUserId);
+      //     await this.fidoSvc.deleteUser(this.currentUserId).toPromise();
+      //     console.log('User deleted successfully after login failure');
+      //     this.currentUserId = null; // 清除 userId
+      //   } catch (deleteError) {
+      //     console.error('Failed to delete user after login error:', deleteError);
+      //     // 刪除失敗不影響錯誤訊息顯示，繼續顯示原始錯誤
+      //   }
+      // }
 
       // Handle different types of WebAuthn errors
       if (error.name === 'NotSupportedError') {

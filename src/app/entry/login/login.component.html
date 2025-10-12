@@ -32,6 +32,16 @@
               <input type="text" placeholder=" " formControlName="username" />
               <div class="border"></div>
             </label>
+            <div
+              class="error-message"
+              *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
+            >
+              <ng-container *ngIf="loginForm.get('username')?.errors as errors">
+                <div *ngFor="let errMsg of errors['errMsgs']">
+                  {{ errMsg }}
+                </div>
+              </ng-container>
+            </div>
             <!-- <label>
             <p>Password</p>
             <input type="password" placeholder=" " />
@@ -62,11 +72,23 @@
               <input type="text" placeholder=" " formControlName="username" />
               <div class="border"></div>
             </label>
+            <div
+              class="error-message"
+              *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched"
+            >
+              Username is required
+            </div>
             <label>
               <p>Display Name</p>
               <input type="text" placeholder=" " formControlName="display" />
               <div class="border"></div>
             </label>
+            <div
+              class="error-message"
+              *ngIf="registerForm.get('display')?.invalid && registerForm.get('display')?.touched"
+            >
+              Display Name is required
+            </div>
             <!--FIDO註冊，暫時不須密碼-->
             <!-- <label>
                 <p>Password</p>

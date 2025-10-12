@@ -1,6 +1,7 @@
 /** 憑證建立回應 */
 export interface CredentialCreateResponse {
   publicKey: PublicKey;
+  userId: number;
 }
 /**
  * 以下是根據後端引用Yubico lib的資料結構定義
@@ -71,6 +72,7 @@ export interface AssertionResponse {
     userVerification?: UserVerificationRequirement;
     extensions?: AuthenticationExtensionsClientInputs;
   };
+  userId: number;
 }
 
 /** 登入完成回應 */

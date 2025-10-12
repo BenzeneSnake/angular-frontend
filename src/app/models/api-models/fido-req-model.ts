@@ -9,8 +9,13 @@ export interface FinishRegisterAuthReqModel {
   credential: PublicKeyCredential;
 }
 
-export interface LoginReqModel {
+export interface UsernameOnly {
   username: string;
+}
+export type LoginReqModel = UsernameOnly;
+
+export interface DeleteUserReqModel {
+  userId: number;
 }
 
 export interface FinishLoginAuthReqModel {
