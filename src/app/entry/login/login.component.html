@@ -42,6 +42,9 @@
                 </div>
               </ng-container>
             </div>
+            <div class="error-message" *ngIf="loginErrorMsg && currentForm === 'login'">
+              {{ loginErrorMsg }}
+            </div>
             <!-- <label>
             <p>Password</p>
             <input type="password" placeholder=" " />
@@ -100,8 +103,8 @@
                 <input type="password" placeholder=" " formControlName="confirmPassword" />
                 <div class="border"></div>
               </label> -->
-            <div class="error-message" *ngIf="errorMsg && currentForm === 'register'">
-              {{ errorMsg }}
+            <div class="error-message" *ngIf="registerErrorMsg && currentForm === 'register'">
+              {{ registerErrorMsg }}
             </div>
             <div class="btnDiv">
               <button type="submit" class="loginBtn">Register</button>

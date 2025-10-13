@@ -24,7 +24,8 @@ export class LoginComponent extends BasePageComponent {
   loginForm: FormGroup;
   registerForm: FormGroup;
   loading = false;
-  errorMsg = '';
+  registerErrorMsg = '';
+  loginErrorMsg = '';
   currentForm: 'login' | 'register' | 'forgot' = 'login';
   finishRegisterAuthReq!: FinishRegisterAuthReqModel;
   finishLoginAuthReq!: FinishLoginAuthReqModel;
@@ -76,7 +77,7 @@ export class LoginComponent extends BasePageComponent {
     }
 
     this.loading = true;
-    this.errorMsg = '';
+    this.registerErrorMsg = '';
     const registerForm: RegisterReqModel = this.registerForm.getRawValue();
 
     try {
@@ -100,20 +101,20 @@ export class LoginComponent extends BasePageComponent {
           console.log('User deleted successfully after registration failure');
         } catch (deleteError) {
           console.error('Failed to delete user after registration error:', deleteError);
-          this.errorMsg = 'Failed to delete user after registration error: ' + deleteError;
+          this.registerErrorMsg = 'Failed to delete user after registration error: ' + deleteError;
           return; // 提早返回，不顯示其他錯誤訊息
         }
       }
 
       // 根據錯誤類型顯示不同訊息
       if (error.name === 'NotSupportedError') {
-        this.errorMsg = '您的瀏覽器不支援 FIDO 認證';
+        this.registerErrorMsg = '您的瀏覽器不支援 FIDO 認證';
       } else if (error.name === 'InvalidStateError') {
-        this.errorMsg = '此裝置已註冊過，請使用其他裝置或聯絡管理員';
+        this.registerErrorMsg = '此裝置已註冊過，請使用其他裝置或聯絡管理員';
       } else if (error.name === 'NotAllowedError') {
-        this.errorMsg = '使用者取消了認證流程';
+        this.registerErrorMsg = '使用者取消了認證流程';
       } else {
-        this.errorMsg = error.message || 'FIDO 註冊失敗，請稍後再試';
+        this.registerErrorMsg = error.message || 'FIDO 註冊失敗，請稍後再試';
       }
     } finally {
       this.currentUserId = null; // 清除 userId
@@ -197,7 +198,7 @@ export class LoginComponent extends BasePageComponent {
           break;
         default: {
           const err = finishauth.errorData as ErrorData;
-          this.errorMsg = err.message;
+          this.registerErrorMsg = err.message;
           break;
         }
       }
@@ -219,7 +220,7 @@ export class LoginComponent extends BasePageComponent {
     }
 
     this.loading = true;
-    this.errorMsg = '';
+    this.loginErrorMsg = '';
 
     try {
       const loginForm: LoginReqModel = this.loginForm.getRawValue();
@@ -235,13 +236,13 @@ export class LoginComponent extends BasePageComponent {
 
       // 根據錯誤類型顯示不同訊息
       if (error.name === 'NotSupportedError') {
-        this.errorMsg = '您的瀏覽器不支援 FIDO 認證';
+        this.loginErrorMsg = '您的瀏覽器不支援 FIDO 認證';
       } else if (error.name === 'InvalidStateError') {
-        this.errorMsg = '此裝置已註冊過，請使用其他裝置或聯絡管理員';
+        this.loginErrorMsg = '此裝置已註冊過，請使用其他裝置或聯絡管理員';
       } else if (error.name === 'NotAllowedError') {
-        this.errorMsg = '使用者取消了認證流程';
+        this.loginErrorMsg = '使用者取消了認證流程';
       } else {
-        this.errorMsg = error.message || 'FIDO 註冊失敗，請稍後再試';
+        this.loginErrorMsg = error.message || 'FIDO 註冊失敗，請稍後再試';
       }
     }
   }
@@ -251,7 +252,7 @@ export class LoginComponent extends BasePageComponent {
     if (this.loginForm.invalid) return;
 
     this.loading = true;
-    this.errorMsg = '';
+    this.loginErrorMsg = '';
 
     try {
       // Step 1: Start login process - get assertion options
@@ -328,7 +329,7 @@ export class LoginComponent extends BasePageComponent {
           break;
         default: {
           const err = loginResult.errorData as ErrorData;
-          this.errorMsg = err.message;
+          this.loginErrorMsg = err.message;
           break;
         }
       }
@@ -354,15 +355,15 @@ export class LoginComponent extends BasePageComponent {
 
       // Handle different types of WebAuthn errors
       if (error.name === 'NotSupportedError') {
-        this.errorMsg = '您的瀏覽器不支援 FIDO 認證';
+        this.loginErrorMsg = '您的瀏覽器不支援 FIDO 認證';
       } else if (error.name === 'NotAllowedError') {
-        this.errorMsg = '使用者取消了認證流程';
+        this.loginErrorMsg = '使用者取消了認證流程';
       } else if (error.name === 'SecurityError') {
-        this.errorMsg = '安全性錯誤，請檢查網站設定';
+        this.loginErrorMsg = '安全性錯誤，請檢查網站設定';
       } else if (error.name === 'InvalidStateError') {
-        this.errorMsg = '認證器狀態錯誤';
+        this.loginErrorMsg = '認證器狀態錯誤';
       } else {
-        this.errorMsg = error.message || 'Login failed, please try again';
+        this.loginErrorMsg = error.message || 'Login failed, please try again';
       }
     }
   }
