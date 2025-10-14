@@ -23,7 +23,8 @@ import { LoginValidator } from './login.validator';
 export class LoginComponent extends BasePageComponent {
   loginForm: FormGroup;
   registerForm: FormGroup;
-  loading = false;
+  loading = false; //TODO: loading 目前沒用到，之後移除
+  loginSubmitted = false;
   registerErrorMsg = '';
   loginErrorMsg = '';
   currentForm: 'login' | 'register' | 'forgot' = 'login';
@@ -214,6 +215,7 @@ export class LoginComponent extends BasePageComponent {
    * @returns
    */
   async onLoginSubmit(): Promise<void> {
+    this.loginSubmitted = true;
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
       return;

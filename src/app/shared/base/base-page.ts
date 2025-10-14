@@ -1,7 +1,8 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'app-base-page',
+  selector: 'lib-app-base-page',
   template: '',
   styles: [],
 })
@@ -10,12 +11,16 @@ export abstract class BasePageComponent implements OnInit, OnDestroy {
     this.onDestroy();
   }
 
-  onDestroy(): void { }
+  onDestroy(): void {}
 
   ngOnInit(): void {
     this.onInit();
   }
 
-  abstract onInit(): void;
+  showInputBlockError(submitted: boolean, submitForm: FormGroup, ctrlName: string): boolean {
+    const ctrl = submitForm.get(ctrlName);
+    return submitted && ctrl?.errors?.errMsg;
+  }
 
+  abstract onInit(): void;
 }

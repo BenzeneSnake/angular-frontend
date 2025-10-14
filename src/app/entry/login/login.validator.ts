@@ -13,7 +13,7 @@ export class LoginValidator {
     const errors = Validators.required(username);
     if (errors) {
       errorHandle(username, (setError) => {
-        setError('未輸入username，請輸入username');
+        setError(username, '未輸入username，請輸入username');
       });
     }
   }
