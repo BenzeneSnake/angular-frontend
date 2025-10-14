@@ -42,7 +42,7 @@ Original CodePen by [Olivia Ng]: [[URL](https://codepen.io/oliviale/pen/BaoXOOP)
 ### FIDO2 / WebAuthn 說明
 
 詳閱:
-[FIDO2 / WebAuthn 說明](angular-frontend/src/docs/FIDO2.md)
+[FIDO2 / WebAuthn 說明](src/docs/webauthn-types.md)
 
 ### 後端程式
 
