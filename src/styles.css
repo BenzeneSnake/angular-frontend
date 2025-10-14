@@ -9,6 +9,19 @@
   font-style: normal;
 }
 
+#login .form .inputBlock.error {
+  border: 1px solid #eb4752;
+}
+
+.errorMessage1 {
+  color: #ff4444;
+  font-size: 14px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  font-weight: 500;
+  white-space: normal;
+}
+
 .error-message {
   color: #ff4444;
   font-size: 14px;

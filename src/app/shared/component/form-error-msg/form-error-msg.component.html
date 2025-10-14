@@ -1,0 +1,4 @@
+<ng-template [ngIf]="showErr && msg">
+  <div [ngClass]="{ 'form--col col--full': isFull }" class="errMsg" [innerHTML]="msg"></div>
+  <br *ngIf="aftBr" />
+</ng-template>

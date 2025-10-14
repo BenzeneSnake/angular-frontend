@@ -27,32 +27,35 @@
         <!-- Login form -->
         <div id="login" class="form" [ngClass]="{ toggle: currentForm === 'login' }">
           <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
-            <label>
+            <label for="username">
               <p>Username</p>
-              <input type="text" placeholder=" " formControlName="username" />
+              <div
+                class="inputBlock"
+                [class.error]="showInputBlockError(loginSubmitted, loginForm, 'username')"
+              >
+                <input
+                  id="username"
+                  name="username"
+                  type="text"
+                  placeholder=" "
+                  formControlName="username"
+                  autocomplete="username"
+                />
+              </div>
+              <lib-form-error-msg
+                [showErr]="loginSubmitted"
+                [errMsg]="loginForm.get('username')?.errors?.errMsg"
+                [ngClass]="['errorMessage1']"
+              ></lib-form-error-msg>
               <div class="border"></div>
             </label>
-            <div
-              class="error-message"
-              *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
-            >
-              <ng-container *ngIf="loginForm.get('username')?.errors as errors">
-                <div *ngFor="let errMsg of errors['errMsgs']">
-                  {{ errMsg }}
-                </div>
-              </ng-container>
-            </div>
-            <!-- <label>
-            <p>Password</p>
-            <input type="password" placeholder=" " />
-            <div class="border"></div>
-          </label> -->
             <div class="btnDiv">
               <button type="submit" class="loginBtn">Login</button>
             </div>
           </form>
           <footer>
-            <button type="button" class="forgotBtn" (click)="showForget()">Forgot password?</button>
+            <!--尚未開發，暫時註銷-->
+            <!-- <button type="button" class="forgotBtn" (click)="showForget()">Forgot password?</button> -->
             <button type="button" class="registerBtn" (click)="showRegister()">
               Need an account?
             </button>
@@ -100,8 +103,8 @@
                 <input type="password" placeholder=" " formControlName="confirmPassword" />
                 <div class="border"></div>
               </label> -->
-            <div class="error-message" *ngIf="errorMsg && currentForm === 'register'">
-              {{ errorMsg }}
+            <div class="error-message" *ngIf="registerErrorMsg && currentForm === 'register'">
+              {{ registerErrorMsg }}
             </div>
             <div class="btnDiv">
               <button type="submit" class="loginBtn">Register</button>
