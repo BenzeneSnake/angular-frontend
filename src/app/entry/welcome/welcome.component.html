@@ -3,14 +3,13 @@
     <div class="success-icon">
       <div class="checkmark-circle">
         <svg class="checkmark" viewBox="0 0 24 24">
-          <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+          <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
         </svg>
       </div>
     </div>
     <h1 class="welcome-title">歡迎登入</h1>
     <p class="welcome-subtitle">您已成功登入系統</p>
     <div class="user-badge" *ngIf="username">
-      <div class="avatar">{{ username.charAt(0).toUpperCase() }}</div>
       <p class="username">{{ username }}</p>
     </div>
   </div>
