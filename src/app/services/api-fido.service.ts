@@ -28,30 +28,6 @@ export class ApiFidoService {
 
   constructor(private httpClient: HttpClient) {}
 
-  // /**
-  //  * @GET
-  //  */
-  // getRegister(): Observable<Res<applyDataModel>> {
-  //   return this.httpClient.get<Res<applyDataModel>>(this.REGISTER);
-  // }
-
-  // /**
-  //  * @POST - Start FIDO registration process
-  //  */
-  // postRegister(username: string, display: string): Observable<any> {
-  //   const formData = new FormData();
-  //   formData.append('username', username);
-  //   formData.append('display', display);
-  //   return this.httpClient.post<any>(this.REGISTER, formData);
-  // }
-
-  // /**
-  //  * @POST - Complete FIDO registration
-  //  */
-  // finishAuth(formData: FormData): Observable<any> {
-  //   return this.httpClient.post<any>(this.FINISH_AUTH, formData);
-  // }
-
   /**
    * @POST fido服務列表 - API1 註冊
    */

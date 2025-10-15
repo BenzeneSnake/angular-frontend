@@ -14,7 +14,7 @@ export class WelcomeComponent extends BasePageComponent {
     super();
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras.state) {
-      this.username = navigation.extras.state['username'] || '';
+      this.username = navigation.extras.state.username || '';
     }
   }
 
